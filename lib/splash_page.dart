@@ -17,8 +17,13 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
   final LocalAuthService _authService = LocalAuthService();
-  bool _isAuthenticated = false; // Control UI rendering
-  @override
+  bool _isAuthenticated = false;
+
+  // New calm color palette
+  static const Color darkBackground = Color(0xFF0D0D0D);
+  static const Color softWhiteGray = Color(0xFFE8E8E8);
+  static const Color mediumGray = Color(0xFF9E9E9E);
+
   @override
   void initState() {
     super.initState();
@@ -37,17 +42,8 @@ class _SplashPageState extends State<SplashPage> {
         setState(() => _isAuthenticated = true);
         return;
       }
-      // ❗ biometric failed → fallback to PIN
     }
-
-    // 👇  PIN flow if user cancel biometric
-    // await _checkUser();
   }
-
-  static const Color powderPink = Color(0xFFF4C2C2);
-  static const Color warmBeige = Color(0xFFF5E6D3);
-  static const Color roseGold = Color(0xFFB76E79);
-  static const Color purplePink = Color(0xFFC48BCB);
 
   Future<void> _checkUser() async {
     final prefs = await SharedPreferences.getInstance();
@@ -68,31 +64,25 @@ class _SplashPageState extends State<SplashPage> {
     }
   }
 
-  // Future<void> _navigateSignedUser() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   final String? savedPin = prefs.getString('userPin');
-  //
-  //   if (!mounted) return;
-  //
-  //   if (savedPin == null) {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (_) => const RegisterPage()),
-  //     );
-  //   } else {
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (_) => const HomePage()),
-  //     );
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     if (!_isAuthenticated) {
-      return const Scaffold(
-        backgroundColor: Colors.black,
-        body: Center(child: CircularProgressIndicator(color: Colors.white)),
+      return Scaffold(
+        backgroundColor: darkBackground,
+        body: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/icons/background.png'),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: const Center(
+            child: CircularProgressIndicator(
+              color: softWhiteGray,
+              strokeWidth: 2,
+            ),
+          ),
+        ),
       );
     }
     return Scaffold(body: splashView());
@@ -100,75 +90,95 @@ class _SplashPageState extends State<SplashPage> {
 
   Widget splashView() {
     return Container(
+      width: double.infinity,
+      height: double.infinity,
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [powderPink, warmBeige],
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+        image: DecorationImage(
+          image: AssetImage('assets/icons/background.png'),
+          fit: BoxFit.cover,
         ),
       ),
-      child: Center(
+      child: SafeArea(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            CircleAvatar(
-              radius: 55,
-              backgroundColor: Colors.white,
-              child: Icon(Icons.book_rounded, size: 60, color: roseGold),
+            const Spacer(flex: 2),
+            
+            // Logo
+            Image.asset(
+              'assets/icons/logo.png',
+              width: 120,
+              height: 120,
             ),
-            SizedBox(height: 28),
-            Text(
-              "لَحْظَةُ ذِكْرَى",
+            
+            const SizedBox(height: 32),
+            
+            // App Name
+            const Text(
+              "Memories",
               style: TextStyle(
                 fontFamily: 'Tajawal',
                 fontSize: 42,
-                fontWeight: FontWeight.w700,
-                color: purplePink,
-                letterSpacing: 1.2,
+                fontWeight: FontWeight.w300,
+                color: softWhiteGray,
+                letterSpacing: 8,
               ),
-              textDirection: TextDirection.rtl,
             ),
-            SizedBox(height: 12),
+            
+            const SizedBox(height: 16),
+            
+            // Subtitle
             Text(
-              "✨ دَفْتَرُكَ اليَوْمِي… لَحَظَات لا تُنْسَى ✨",
+              "مساحتك الخاصة للذكريات",
               style: TextStyle(
                 fontFamily: 'Tajawal',
-                fontSize: 18,
-                color: Colors.grey,
-                height: 1.4,
+                fontSize: 16,
+                color: softWhiteGray.withOpacity(0.7),
+                letterSpacing: 1.5,
               ),
               textDirection: TextDirection.rtl,
-              textAlign: TextAlign.center,
             ),
-            SizedBox(height: 22),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => const HomePage()),
-                );
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFB76E79), // roseGold
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 32,
-                  vertical: 14,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                elevation: 4,
-              ),
-              child: const Text(
-                'المتابعة',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
-                  fontFamily: 'Tajawal',
+            
+            const Spacer(flex: 3),
+            
+            // Single button at bottom
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (_) => const HomePage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white.withOpacity(0.15),
+                    foregroundColor: softWhiteGray,
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(30),
+                      side: BorderSide(
+                        color: softWhiteGray.withOpacity(0.3),
+                        width: 1,
+                      ),
+                    ),
+                    elevation: 0,
+                  ),
+                  child: const Text(
+                    'ابدأ رحلتك',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 2,
+                      fontFamily: 'Tajawal',
+                    ),
+                  ),
                 ),
               ),
             ),
+            
+            const SizedBox(height: 50),
           ],
         ),
       ),
