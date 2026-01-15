@@ -1,4 +1,4 @@
-# 🌟 Memories App - لحظات ذكرى# lahzet_zikry
+# 🌟 Memories App
 
 
 
@@ -66,15 +66,6 @@ Memories App (لحظات ذكرى) is a personal memory journal that helps you c
 - **Search**: Quick search through titles and content
 - **Date Sorting**: Memories automatically sorted by date
 - **Pull to Refresh**: Easy refresh functionality
-
-## 🖼️ Screenshots
-
-<div align="center">
-  <img src="image_1.png" width="200" />
-  <img src="image_2.png" width="200" />
-  <img src="image_3.png" width="200" />
-  <img src="image_4.png" width="200" />
-</div>
 
 ## 🚀 Getting Started
 
@@ -276,3 +267,4 @@ For support, email zeyadabdelwahab@example.com or open an issue on GitHub.
 ⭐ Star this repo if you like it!
 
 </div>
+
